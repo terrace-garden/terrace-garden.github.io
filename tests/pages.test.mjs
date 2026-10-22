@@ -23,7 +23,7 @@ for (const page of ['index.html', 'privacy/index.html', 'support/index.html', 'c
 }
 test('privacy covers deletion, encrypted recovery, reports, hosting and support', async () => {
   const html = await readFile(new URL('privacy/index.html', root), 'utf8');
-  for (const detail of ['Delete Passport cloud copy', 'revocation marker', 'Delete my shared data', 'GitHub Pages', 'support provider', 'hashed network-address', 'Reports store', 'Apple-verified subscription status', 'not sent to the Terrace garden service']) {
+  for (const detail of ['Delete Passport cloud copy', 'revocation marker', 'Delete my shared data', 'GitHub Pages', 'Resend', 'Google-hosted support mailbox', 'random message identifiers', 'hashed network-address', 'Reports store', 'Apple-verified subscription status', 'not sent to the Terrace garden service']) {
     assert.ok(html.includes(detail), `Missing privacy detail: ${detail}`);
   }
 });
