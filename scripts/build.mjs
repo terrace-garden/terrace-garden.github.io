@@ -1,11 +1,11 @@
-import { mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdir, writeFile, rm, cp } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { publicPage } from '../src/public-pages.mjs';
 
 const output = new URL('../docs/', import.meta.url);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const route of ['', 'privacy', 'support', 'community']) {
+for (const route of ['privacy', 'support', 'community']) {
   const path = route ? `/${route}/` : '/';
   const response = publicPage(new Request(`https://terrace-garden.github.io${path}`), path);
   if (!response?.ok) throw new Error(`Unable to generate ${path}`);
@@ -18,6 +18,7 @@ for (const route of ['', 'privacy', 'support', 'community']) {
   await mkdir(directory, { recursive: true });
   await writeFile(new URL('index.html', directory), html);
 }
+await cp(new URL('../src/landing/', import.meta.url), output, { recursive: true });
 await writeFile(new URL('.nojekyll', output), '');
 await writeFile(new URL('404.html', output), '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found — Terrace</title><main><h1>A little detour.</h1><p>This page isn’t here. <a href="https://terrace-garden.github.io/">Return to Terrace</a>.</p></main></html>');
 console.log(`Built four static pages at ${fileURLToPath(output)}`);
