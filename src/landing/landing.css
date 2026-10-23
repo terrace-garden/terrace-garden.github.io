@@ -40,7 +40,12 @@ nav a,.launch-link { font-size: 16px; text-decoration: none; }
 .button:hover { transform: translateY(-2px); }
 .button:active { transform: scale(.98); }
 .hero-garden { padding-top: 136px; position: relative; min-width: 0; }
-.hero-garden img { width: 116%; max-width: none; margin-left: -10%; }
+.garden-art { position: relative; width: 116%; margin-left: -10%; }
+.hero-garden img { width: 100%; max-width: none; }
+.paper-lights { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; fill: #55B9FF; }
+.hero-seed,.hero-glint,.world-lights path { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.hero-seed { transform-box: view-box; transform-origin: 0 0; }
+.glint-two { fill: #D5AA51; }
 /* Alpha-edge compositing preserves the native art's translucent paper light.
    These masks feather export boundaries; they do not paint a gradient surface. */
 .hero-garden img,.world-picture img {
@@ -56,8 +61,11 @@ nav a,.launch-link { font-size: 16px; text-decoration: none; }
 .world-heading { display: flex; align-items: end; justify-content: space-between; gap: 40px; }
 .world-heading p { max-width: 24ch; }
 .world-stage { display: grid; grid-template-columns: 8fr 4fr; gap: 3%; align-items: center; padding-top: 30px; }
-.world-picture { min-width: 0; }
+.world-picture { position: relative; min-width: 0; perspective: 1200px; }
 .world-picture img { width: 100%; }
+.world-picture img { transform-origin: 50% 80%; }
+.world-previous { position: absolute; inset: 0; }
+.world-previous[hidden] { display: none; }
 .world-picker { padding-left: 20px; }
 .world-tabs { display: flex; flex-direction: column; align-items: start; gap: 6px; }
 .world-tabs button { min-height: 48px; background: none; border: 0; padding: 8px 0; text-align: left; font-family: var(--round); font-size: 24px; font-weight: 500; letter-spacing: -.025em; }
@@ -100,7 +108,7 @@ details p { margin-top: 16px; font-size: 17px; }
   .hero-copy { padding-top: 62px; }
   h1 { font-size: 64px; }
   .hero-garden { padding-top: 160px; }
-  .hero-garden img { width: 125%; margin-left: -12%; }
+  .garden-art { width: 125%; margin-left: -12%; }
   .world-heading { align-items: start; }
   .world-stage { grid-template-columns: 7fr 5fr; gap: 0; }
   .world-tabs button { font-size: 21px; }
@@ -120,7 +128,8 @@ details p { margin-top: 16px; font-size: 17px; }
   .hero-copy p { font-size: 18px; margin-top: 24px; max-width: 29ch; }
   .hero-copy .button { margin-top: 24px; }
   .hero-garden { padding-top: 24px; margin-inline: -15px; width: calc(100% + 30px); }
-  .hero-garden img { width: 100%; max-width: 100%; margin-left: 0; }
+  .garden-art { width: 100%; margin-left: 0; }
+  .hero-garden img { max-width: 100%; }
   .hero-garden figcaption { margin-top: 8px; font-size: 15px; }
   .focus-intro { display: block; padding-top: 28px; padding-bottom: 72px; }
   .focus-intro h2 { font-size: 34px; max-width: 14ch; }
@@ -162,10 +171,24 @@ details p { margin-top: 16px; font-size: 17px; }
   .hero-copy h1 span { animation: line-arrive 700ms var(--ease) both; }
   .hero-copy h1 span+span { animation-delay: 70ms; }
   .hero-garden img { animation: garden-arrive 1100ms var(--ease) both; }
-  .world-picture.is-changing img { animation: world-arrive 600ms var(--ease); }
+  .hero-seed { animation: seed-journey 1550ms var(--ease) 150ms both; }
+  .hero-glint { animation: paper-glint 850ms ease-out both; }
+  .glint-one { animation-delay: 650ms; }
+  .glint-two { animation-delay: 800ms; }
+  .glint-three { animation-delay: 980ms; }
   @keyframes line-arrive { from { transform: translateY(14px); opacity: .1; } to { transform: none; opacity: 1; } }
   @keyframes garden-arrive { from { transform: translateY(24px) scale(.96); opacity: .1; } to { transform: none; opacity: 1; } }
-  @keyframes world-arrive { from { transform: translateY(10px) scale(.985); opacity: .3; } to { transform: none; opacity: 1; } }
+  @keyframes seed-journey {
+    0% { transform: translate(350px,470px) scale(.4) rotate(-30deg); opacity: 0; }
+    20% { opacity: .9; }
+    52% { transform: translate(735px,215px) scale(1) rotate(15deg); opacity: .9; }
+    100% { transform: translate(1080px,460px) scale(.3) rotate(65deg); opacity: 0; }
+  }
+  @keyframes paper-glint {
+    0% { transform: scale(.25) rotate(-25deg); opacity: 0; }
+    35% { transform: scale(1) rotate(0); opacity: .9; }
+    100% { transform: scale(.45) rotate(20deg); opacity: 0; }
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

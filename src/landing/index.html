@@ -35,7 +35,15 @@
         <a class="button" href="#worlds">Find your world <span aria-hidden="true">↗</span></a>
       </div>
       <figure class="hero-garden">
-        <img src="assets/lantern-grove.webp" alt="An origami terrace with peach paper trees, lanterns, flowers and Pip perched on the fence." width="1520" height="860" fetchpriority="high">
+        <div class="garden-art">
+          <img src="assets/lantern-grove.webp" alt="An origami terrace with peach paper trees, lanterns, flowers and Pip perched on the fence." width="1520" height="860" fetchpriority="high">
+          <svg class="paper-lights hero-lights" viewBox="0 0 1520 860" aria-hidden="true" focusable="false">
+            <g class="hero-seed"><path d="M0-16 4-4 14 0 4 4 0 16-4 4-14 0-4-4Z"/></g>
+            <g transform="translate(600 370)"><path class="hero-glint glint-one" d="M0-13 3-3 11 0 3 3 0 13-3 3-11 0-3-3Z"/></g>
+            <g transform="translate(920 330)"><path class="hero-glint glint-two" d="M0-17 4-4 14 0 4 4 0 17-4 4-14 0-4-4Z"/></g>
+            <g transform="translate(1080 460)"><path class="hero-glint glint-three" d="M0-11 3-3 9 0 3 3 0 11-3 3-9 0-3-3Z"/></g>
+          </svg>
+        </div>
         <figcaption>Less checking. More growing.</figcaption>
       </figure>
     </section>
@@ -48,7 +56,13 @@
       <div class="world-heading frame"><h2 id="worlds-title">Pick a little escape.</h2><p>Same focus. A different kind of magic.</p></div>
       <div class="world-stage frame" data-ui>
         <div class="world-picture" role="tabpanel" id="world-panel" aria-labelledby="world-lantern">
+          <img id="world-previous" class="world-previous" src="assets/lantern-grove.webp" alt="" width="1520" height="860" aria-hidden="true" hidden>
           <img id="world-image" src="assets/lantern-grove.webp" alt="Lantern grove, with peach paper trees and a warm string of lanterns." width="1520" height="860" loading="lazy" decoding="async">
+          <svg class="paper-lights world-lights" viewBox="0 0 1520 860" aria-hidden="true" focusable="false">
+            <g transform="translate(560 380)"><path d="M0-14 4-4 12 0 4 4 0 14-4 4-12 0-4-4Z"/></g>
+            <g transform="translate(925 320)"><path d="M0-18 5-5 15 0 5 5 0 18-5 5-15 0-5-5Z"/></g>
+            <g transform="translate(1090 465)"><path d="M0-11 3-3 9 0 3 3 0 11-3 3-9 0-3-3Z"/></g>
+          </svg>
         </div>
         <div class="world-picker">
           <div class="world-tabs" role="tablist" aria-label="Garden worlds" aria-orientation="vertical">
