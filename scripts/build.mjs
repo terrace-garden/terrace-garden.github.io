@@ -19,6 +19,7 @@ for (const route of ['privacy', 'support', 'community']) {
   await writeFile(new URL('index.html', directory), html);
 }
 await cp(new URL('../src/landing/', import.meta.url), output, { recursive: true });
+await cp(new URL('../src/checkout/', import.meta.url), new URL('checkout/', output), { recursive: true });
 await writeFile(new URL('.nojekyll', output), '');
 await writeFile(new URL('404.html', output), '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found — Terrace</title><main><h1>A little detour.</h1><p>This page isn’t here. <a href="https://terrace-garden.github.io/">Return to Terrace</a>.</p></main></html>');
-console.log(`Built four static pages at ${fileURLToPath(output)}`);
+console.log(`Built five static pages at ${fileURLToPath(output)}`);
