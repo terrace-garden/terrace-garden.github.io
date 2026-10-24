@@ -2,15 +2,21 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 const root = new URL('../docs/', import.meta.url);
-for (const page of ['privacy/index.html', 'support/index.html', 'community/index.html']) {
-  test(`${page}: accessible static document without tracking or personal identity`, async () => {
+for (const page of ['privacy/index.html', 'support/index.html', 'community/index.html', 'terms/index.html', 'refunds/index.html']) {
+  test(`${page}: accessible static document without tracking or private account details`, async () => {
     const document = new URL(page, root);
     const html = await readFile(document, 'utf8');
     assert.match(html, /<html lang="en">/);
     assert.equal((html.match(/<main\b/g) || []).length, 1);
     assert.match(html, /href="#main">Skip to content/);
     assert.match(html, /prefers-contrast:more/);
-    assert.doesNotMatch(html, /<script\b|<iframe\b|<form\b|chatgpt\.site|Kaden|Zheng|gmail\.com|re_[A-Za-z0-9]{16}/i);
+    assert.doesNotMatch(html, /<script\b|<iframe\b|<form\b|chatgpt\.site|gmail\.com|harvard\.edu|re_[A-Za-z0-9]{16}/i);
+    if (page !== 'community/index.html') {
+      assert.equal((html.match(/Kaden Zheng, trading as Terrace/g) || []).length, 1);
+      assert.match(html, /Public downloads and live website purchases are not available yet/);
+      assert.doesNotMatch(html, /\bdraft\b|awaiting confirmation|supplier.*unknown/i);
+      for (const policy of ['terms', 'refunds', 'privacy', 'support']) assert.ok(html.includes(`href="../${policy}/"`), `Missing policy navigation: ${policy}`);
+    } else assert.doesNotMatch(html, /Kaden|Zheng/);
     assert.match(html, /Content-Security-Policy/);
     assert.ok(Buffer.byteLength(html) < 32_768, 'A help page should remain small.');
     for (const [, href] of html.matchAll(/href="([^"]+)"/g)) {
