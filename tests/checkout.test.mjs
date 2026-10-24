@@ -201,20 +201,41 @@ test('checkout events update only minimal status for the expected transaction', 
   p.scripts[0].onload();
   p.event('checkout.loaded');
   assert.equal(p.status.dataset.phase, 'ready');
+  assert.equal(p.status.textContent, 'Review your plan below.');
   p.event('checkout.completed', { transaction_id: `txn_${'z'.repeat(26)}` });
   p.event('subscription.active', { license_key: 'never-display-or-persist' });
   assert.equal(p.status.dataset.phase, 'ready');
   p.event('checkout.payment.failed');
   assert.equal(p.status.dataset.phase, 'payment-error');
+  assert.equal(p.status.textContent, 'Checkout could not finish. Check the details below or try another payment method.');
   p.event('checkout.closed');
   assert.equal(p.status.dataset.phase, 'closed');
   p.event('checkout.completed', { customer: { email: 'never-display@example.test' }, custom_data: { recovery_key: 'never' } });
-  assert.equal(p.status.textContent, 'Payment complete. Return to Terrace.');
+  assert.equal(p.status.textContent, 'Checkout complete. Return to Terrace.');
   p.event('checkout.closed');
   assert.equal(p.status.dataset.phase, 'complete');
   assert.equal(p.window.location.href, href);
   assert.equal(p.window.Pro, undefined);
 });
+
+for (const [flow, total] of [['paid', 3.99], ['14-day free trial', 0]]) {
+  test(`${flow} completion is accurate without claiming a charge or granting Pro`, () => {
+    const p = page();
+    p.scripts[0].onload();
+    const originalWindowKeys = Object.keys(p.window);
+    p.event('checkout.completed', { totals: { total }, currency_code: 'USD' });
+    assert.equal(p.status.textContent, 'Checkout complete. Return to Terrace.');
+    assert.equal(p.status.dataset.phase, 'complete');
+    assert.equal(p.window.location.href, href);
+    assert.equal(p.window.Pro, undefined);
+    assert.deepEqual(Object.keys(p.window), originalWindowKeys);
+    assert.equal(p.scripts.length, 1);
+    assert.equal(p.initializations.length, 1);
+    assert.equal(p.timers.size, 0);
+    p.event('checkout.closed');
+    assert.equal(p.status.dataset.phase, 'complete');
+  });
+}
 
 test('checkout source has no licensing authority, persistent storage, redirect, event data logging or API secret', () => {
   assert.doesNotMatch(source, /fetch\(|localStorage|sessionStorage|document\.cookie|location\s*=|location\.(?:assign|replace)|window\.open|console\.|license_key|recovery_key|\.Checkout\.open\(/);

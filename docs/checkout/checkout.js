@@ -85,13 +85,13 @@
           frame.hidden = false;
           if (event.name === 'checkout.completed') {
             completed = true;
-            show('Payment complete. Return to Terrace.', 'complete');
+            show('Checkout complete. Return to Terrace.', 'complete');
           } else if (event.name === 'checkout.loaded') {
-            show('Complete your purchase below.', 'ready');
+            show('Review your plan below.', 'ready');
           } else if (event.name === 'checkout.closed') {
             show('Checkout closed. You can return to Terrace.', 'closed');
           } else if (['checkout.error', 'checkout.payment.error', 'checkout.payment.failed'].includes(event.name)) {
-            show('Payment could not finish. Check the details below or try another payment method.', 'payment-error');
+            show('Checkout could not finish. Check the details below or try another payment method.', 'payment-error');
           }
         }
       });
